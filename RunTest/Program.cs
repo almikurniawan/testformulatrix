@@ -10,7 +10,7 @@ public class Program
         .WriteTo.Console()
         .CreateLogger();
 
-        IFormulatrixRepository crudInMemory = new FormulatrixSqlServerRepository("Server=localhost;Database=test;MultipleActiveResultSets=true;User ID=sa;Password=123456;Pooling=true;Max Pool Size=1024; TrustServerCertificate=True;");
+        IFormulatrixRepository crudInMemory = new FormulatrixInMemoryRepository();
         crudInMemory.Initialize();
         var mydata = new MyData
         {
@@ -21,17 +21,17 @@ public class Program
         crudInMemory.Register<MyData>("mydata", mydata, 1);
         logger.Information("Retrieve {@a}", crudInMemory.Retrieve("mydata"));
 
-        //crudInMemory.Register<MyData>("mydata", mydata, 2);
-        //logger.Warning("Retrieve {@a}", crudInMemory.Retrieve("mydata"));
+        crudInMemory.Register<MyData>("mydata", mydata, 2);
+        logger.Warning("Retrieve {@a}", crudInMemory.Retrieve("mydata"));
 
-        //try
-        //{
-        //    crudInMemory.Register<MyData>("mydata", mydata, 2);
-        //}
-        //catch (Exception ex)
-        //{
-        //    logger.Error("Error: {Message}", ex.Message);
-        //}
+        try
+        {
+            crudInMemory.Register<MyData>("mydata", mydata, 2);
+        }
+        catch (Exception ex)
+        {
+            logger.Error("Error: {Message}", ex.Message);
+        }
 
         var myWifeData = new MyWifeData
         {
